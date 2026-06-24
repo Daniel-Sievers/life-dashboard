@@ -5060,26 +5060,55 @@ body {
 }
 
 .demo-card.demo-empty-state {
-  border-color: rgba(251, 191, 36, 0.42);
-  box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.18), 0 18px 42px rgba(251, 191, 36, 0.10);
+  border-color: rgba(251, 191, 36, 0.62);
+  box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.22), 0 18px 42px rgba(251, 191, 36, 0.14);
+  animation: demoCardAttentionBlink 1.55s ease-in-out infinite;
+}
+
+.demo-card.demo-empty-state .demo-empty-hint {
+  animation: demoHintAttentionBlink 1.55s ease-in-out infinite;
 }
 
 .demo-card.demo-empty-state #loadDemoData {
-  animation: demoAttentionPulse 1.8s ease-in-out infinite;
+  animation: demoAttentionPulse 1.35s ease-in-out infinite;
+}
+
+@keyframes demoCardAttentionBlink {
+  0%, 100% {
+    transform: scale(1);
+    border-color: rgba(251, 191, 36, 0.44);
+    box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.18), 0 18px 42px rgba(251, 191, 36, 0.10);
+  }
+  50% {
+    transform: scale(1.006);
+    border-color: rgba(251, 191, 36, 0.88);
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.24), 0 22px 50px rgba(251, 191, 36, 0.18);
+  }
+}
+
+@keyframes demoHintAttentionBlink {
+  0%, 100% {
+    background: rgba(251, 191, 36, 0.10);
+  }
+  50% {
+    background: rgba(251, 191, 36, 0.20);
+  }
 }
 
 @keyframes demoAttentionPulse {
   0%, 100% {
-    transform: translateY(0);
-    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.38);
+    transform: translateY(0) scale(1);
+    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.42);
   }
   50% {
-    transform: translateY(-1px);
-    box-shadow: 0 0 0 7px rgba(251, 191, 36, 0.00);
+    transform: translateY(-2px) scale(1.035);
+    box-shadow: 0 0 0 9px rgba(251, 191, 36, 0.00);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .demo-card.demo-empty-state,
+  .demo-card.demo-empty-state .demo-empty-hint,
   .demo-card.demo-empty-state #loadDemoData {
     animation: none;
   }
