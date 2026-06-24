@@ -6,7 +6,19 @@ A modular, local-first personal dashboard for notes, routines, goals, reflection
 
 This is the public portfolio version of a private dashboard project. It uses fictional demo data and separate public storage keys so it can be shown safely on GitHub and as a live demo.
 
+A separate private variant has also been combined with Supabase for online persistence and database-backed usage. This public version intentionally stays static and local-first because it is meant for safe portfolio/demo presentation and should not expose private data structures, real personal records or private finance context.
+
 > Status: public demo / portfolio project. Not financial advice. Not a medical product.
+
+---
+
+## What this project demonstrates
+
+This project is less about presenting myself as a traditional software developer and more about showing how I approach technical and data-oriented work: understanding a real problem, structuring information, defining requirements, testing results, documenting decisions and improving a system step by step.
+
+The implementation was built with AI-assisted development. The project idea, requirements, structure, testing, iteration, documentation and public/private data separation were directed by me; code generation and debugging were supported by AI tools.
+
+It also demonstrates practical workflow experience with VS Code, Git/GitHub, Vercel deployment, local smoke checks, Markdown documentation and local-first browser storage. In a private variant, I also explored Supabase for database-backed persistence. The broader point is not one specific stack, but the ability to work into technical topics quickly — for example data structures, SQL/MySQL, Python, statistics or other tools that are useful for information management and data quality work.
 
 ---
 
