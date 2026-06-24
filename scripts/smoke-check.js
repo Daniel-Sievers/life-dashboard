@@ -50,7 +50,7 @@ assert(app.includes("modularLifeDashboardPublicDemoProfile"), "public demo profi
 assert(!app.includes("personalDashboardData") && !app.includes("personal-dashboard-v143"), "no private dashboard storage references");
 assert(!app.includes("LEGACY_STORAGE_KEYS = [") || app.includes("LEGACY_STORAGE_KEYS = []"), "legacy private migration is disabled");
 assert(readme.includes("no backend is required") || readme.includes("no backend required"), "README states no backend is required for the demo");
-assert(readme.includes("https://life-dashboard-six-zeta.vercel.app"), "README contains live demo link");
+assert(readme.includes("https://life-dashboard-six-xi.vercel.app"), "README contains live demo link");
 assert(readme.includes("No real API key") || readme.includes("No real API keys"), "README states no real API keys are included");
 
 assert(!exists("backup"), "no backup folder is shipped");

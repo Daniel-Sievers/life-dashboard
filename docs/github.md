@@ -13,7 +13,7 @@ git init
 git add .
 git commit -m "Initial public release"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/life-dashboard.git
+git remote add origin https://github.com/Daniel-Sievers/life-dashboard.git
 git push -u origin main
 ```
 

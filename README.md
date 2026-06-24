@@ -1,6 +1,6 @@
 # Life Dashboard
 
-**Live Demo:** https://life-dashboard-six-zeta.vercel.app
+**Live Demo:** https://life-dashboard-six-xi.vercel.app
 
 A modular, local-first personal dashboard for notes, routines, goals, reflection, finance and portfolio tracking.
 
