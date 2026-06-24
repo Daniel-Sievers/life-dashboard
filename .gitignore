@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build/deploy artifacts
+dist/
+build/
+.vercel/
+.netlify/
+
+# Local scratch
+*.local
+tmp/
+backup/
+.git/
+*.backup.json
+*personal-dashboard-backup*.json
+supabase-config.js
+supabase-setup.sql
+AUTH_SETUP.md
+PRIVACY_NOTES.md

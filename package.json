@@ -1,0 +1,31 @@
+{
+  "name": "life-dashboard",
+  "version": "0.26.0",
+  "private": true,
+  "description": "A clean public local-first portfolio demo with a neutral demo empty state, global add-purchase flow, current FX helper and richer protocol demo data.",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "serve": "python3 -m http.server 8000",
+    "check:js": "node --check app.js",
+    "check:smoke": "node scripts/smoke-check.js",
+    "check": "npm run check:js && npm run check:smoke"
+  },
+  "keywords": [
+    "dashboard",
+    "pwa",
+    "local-first",
+    "portfolio",
+    "habits",
+    "goals",
+    "notes"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/life-dashboard.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/life-dashboard/issues"
+  },
+  "homepage": "https://life-dashboard-six-zeta.vercel.app"
+}

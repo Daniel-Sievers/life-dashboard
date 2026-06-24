@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta name="description" content="Privates Life Dashboard für Ziele, Routinen, Finanzen, Wochenplanung und Protokoll.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+    <meta name="theme-color" content="#6d5dfc">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Life Dashboard">
+    <meta name="apple-mobile-web-app-title" content="Dashboard">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/icons/icon-512.png">
+<title>Life Dashboard · Public Demo</title>
+  <link rel="icon" type="image/png" href="app-icon.png" />
+  <link rel="apple-touch-icon" href="app-icon.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <div class="app">
+    <header class="topbar">
+      <div>
+        <h1>Life Dashboard</h1>
+        <p class="subtitle">Routinen, Ziele, Notizen, Finanzen und Reflexion</p>
+      </div>
+
+      <nav id="mainNav">
+        <button class="tab active" data-tab="note">Notizen</button>
+        <button class="tab" data-tab="dashboard">Dashboard</button>
+        <button class="tab" data-tab="quick">Quick Entry</button>
+        <button class="tab" data-tab="fitness">Fitness</button>
+        <button class="tab" data-tab="emotion">Soziales & Reflexion</button>
+        <button class="tab protocol-tab" data-tab="protocol" title="Protokoll" aria-label="Protokoll">📓</button>
+        <button class="tab" data-tab="mind">Reflexion</button>
+        <button class="tab" data-tab="goals">Ziele & Skills</button>
+        <button class="tab" data-tab="backup">Backup</button>
+        <span class="nav-separator" aria-hidden="true"></span>
+        <button class="tab mindfulness-tab" data-tab="mindfulness">Achtsamkeit</button>
+        <span class="nav-separator" aria-hidden="true"></span>
+        <button class="tab gaming-tab" data-tab="gaming">Media Balance</button>
+      </nav>
+    </header>
+
+    <div id="mobileNavOverlay" class="mobile-nav-overlay" aria-hidden="true">
+      <div class="mobile-nav-panel" role="dialog" aria-modal="true" aria-label="Bereichsmenü">
+        <div class="mobile-nav-head">
+          <div>
+            <h1>Life Dashboard</h1>
+            <p>Routinen, Ziele, Notizen, Finanzen und Reflexion</p>
+          </div>
+          <button id="mobileMenuClose" class="mobile-menu-close" type="button" aria-label="Menü schließen">×</button>
+        </div>
+        <div id="mobileNavItems" class="mobile-nav-items"></div>
+      </div>
+    </div>
+
+    <main>
+      <section id="note" class="view active">
+        <div class="card neutral-card">
+          <div class="card-header">
+            <h2>Notizblock 1</h2>
+            <button id="toggleNote" class="small-btn">Zuklappen</button>
+          </div>
+
+          <div id="noteArea">
+            <div class="toolbar">
+              <button data-editor="editor" data-command="bold"><b>B</b></button>
+              <button data-editor="editor" data-command="italic"><i>I</i></button>
+              <button data-editor="editor" data-command="underline"><u>U</u></button>
+              <input type="color" id="textColor" value="#8ee58e" />
+              <button id="applyColorEditor1">Farbe</button>
+              <button data-table-editor="editor">Tabelle einfügen</button>
+
+              <select id="lineHeight1" class="toolbar-select">
+                <option value="compact">kompakt</option>
+                <option value="normal">normal</option>
+                <option value="loose">luftig</option>
+              </select>
+            </div>
+
+            <div
+              id="editor"
+              contenteditable="true"
+              class="editor"
+              spellcheck="false"
+              autocorrect="off"
+              autocomplete="off"
+              autocapitalize="off"
+            >Schreibe hier deine Notiz...</div>
+          </div>
+        </div>
+
+        <div class="card neutral-card top-space">
+          <div class="card-header">
+            <h2>Notizblock 2</h2>
+            <button id="toggleNote2" class="small-btn">Zuklappen</button>
+          </div>
+
+          <div id="noteArea2">
+            <div class="toolbar">
+              <button data-editor="editor2" data-command="bold"><b>B</b></button>
+              <button data-editor="editor2" data-command="italic"><i>I</i></button>
+              <button data-editor="editor2" data-command="underline"><u>U</u></button>
+              <input type="color" id="textColor2" value="#ffae60" />
+              <button id="applyColorEditor2">Farbe</button>
+              <button data-table-editor="editor2">Tabelle einfügen</button>
+
+              <select id="lineHeight2" class="toolbar-select">
+                <option value="compact">kompakt</option>
+                <option value="normal">normal</option>
+                <option value="loose">luftig</option>
+              </select>
+            </div>
+
+            <div
+              id="editor2"
+              contenteditable="true"
+              class="editor"
+              spellcheck="false"
+              autocorrect="off"
+              autocomplete="off"
+              autocapitalize="off"
+            >Schreibe hier deine Notiz...</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="dashboard" class="view">
+        <div class="overview-grid">
+          <div id="overviewFinanceCard" class="overview-card finance-accent">
+            <span>Finanzen</span>
+            <strong id="overviewFinance">0</strong>
+            <small id="overviewFinanceText">kein Wert</small>
+          </div>
+
+          <div class="overview-card fitness-accent">
+            <span>Fitness</span>
+            <strong id="overviewFitness">0</strong>
+            <small id="overviewFitnessText">kein Wert</small>
+          </div>
+
+          <div class="overview-card health-accent">
+            <span>Gesundheit</span>
+            <strong id="overviewHealth">0</strong>
+            <small id="overviewHealthText">kein Wert</small>
+          </div>
+
+          <div class="overview-card emotion-accent">
+            <span>Emotion</span>
+            <strong id="overviewEmotion">0</strong>
+            <small id="overviewEmotionText">kein Wert</small>
+          </div>
+
+          <div class="overview-card life-accent">
+            <span>Lebenssituation</span>
+            <strong id="overviewLife">0</strong>
+            <small id="overviewLifeText">kein Wert</small>
+          </div>
+
+          <div class="overview-card mind-accent">
+            <span>Reflexion</span>
+            <strong id="overviewMind">0</strong>
+            <small id="overviewMindText">kein Wert</small>
+          </div>
+
+          <div class="overview-card discipline-accent">
+            <span>Disziplin</span>
+            <strong id="overviewDiscipline">0</strong>
+            <small id="overviewDisciplineText">kein Wert</small>
+          </div>
+
+          <div class="overview-card goals-accent">
+            <span>Ziele & Skills</span>
+            <strong id="overviewGoals">0%</strong>
+            <small id="overviewGoalsText">keine aktiven Ziele</small>
+          </div>
+
+          <div class="overview-card attraction-accent">
+            <span>Ausstrahlung & Attraktivität</span>
+            <strong id="overviewAttraction">0</strong>
+            <small id="overviewAttractionText">Fundament im Aufbau</small>
+          </div>
+
+          <div id="activeCaveCard" class="overview-card cave-active-card hidden" aria-live="polite">
+            <span>Media Balance</span>
+            <strong>🔥</strong>
+            <small id="activeCaveText">gerade aktiv</small>
+          </div>
+        </div>
+
+        <div id="demoModeCard" class="card demo-card demo-empty-state">
+          <div class="demo-card-header">
+            <div>
+              <h2>Demo-Modus</h2>
+              <p class="hint">Wähle ein fiktives Beispielprofil: Aufbau, stabiler Durchschnitt oder vermögendes Profil. Der Reset betrifft nur diese Public-Version im Browser.</p>
+              <p id="demoEmptyHint" class="demo-empty-hint" aria-live="polite">Noch keine Demo geladen. Lade ein Beispielprofil, um das Dashboard mit fiktiven Daten zu erkunden.</p>
+            </div>
+            <div class="demo-controls">
+              <select id="demoProfileSelect" aria-label="Demo-Profil auswählen">
+                <option value="" selected>Demo-Profil auswählen …</option>
+                <option value="starter">Demo 1 · Aufbau</option>
+                <option value="stable">Demo 2 · Stabil</option>
+                <option value="wealthy">Demo 3 · Vermögend</option>
+              </select>
+              <div class="inline">
+                <button id="loadDemoData" type="button">Demo laden</button>
+                <button id="resetDemoData" type="button">Demo zurücksetzen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div id="financeDashboardCard" class="card finance-card">
+            <div class="finance-privacy-header">
+              <h2>Finanzen</h2>
+              <button id="toggleFinancePrivacy" type="button" class="small-btn">Einklappen</button>
+            </div>
+            <p id="financePrivacyNotice" class="hint finance-privacy-notice hidden">
+              Private Finanzdaten ausgeblendet.
+            </p>
+            <div id="financePrivacyContent" class="finance-privacy-content">
+              <p class="hint">
+                Finanzlevel = freier Cash-Puffer + Portfolio-Wert. Rückzahlungen werden als Vormerkung geführt und nicht automatisch vom Vermögen abgezogen.
+              </p>
+
+              <label>Cash / liquider Kontostand (€)</label>
+              <input type="number" id="fiat" step="0.01" />
+
+              <div class="portfolio-panel result-box">
+                <h3>Portfolio-Assets</h3>
+                <p class="hint">
+                  Lege beliebige Assets an: Aktien, ETFs, Krypto, Edelmetalle, Cash-Positionen oder Sonstiges.
+                  Der Zielanteil beschreibt, wie groß ein Asset idealerweise im Portfolio sein soll. Preise können in EUR, USD, CHF oder GBP geführt und nach EUR umgerechnet werden.
+                </p>
+
+                <div class="portfolio-form portfolio-form-labeled">
+                  <label class="portfolio-field portfolio-field-wide">
+                    <span>Asset-Preset</span>
+                    <select id="assetPreset">
+                      <option value="">Asset-Preset auswählen…</option>
+                      <optgroup label="ETF">
+                        <option value="msci-world">MSCI World ETF</option>
+                        <option value="sp500">S&amp;P 500 ETF</option>
+                        <option value="nasdaq100">Nasdaq 100 ETF</option>
+                      </optgroup>
+                      <optgroup label="Aktie">
+                        <option value="apple">Apple</option>
+                        <option value="microsoft">Microsoft</option>
+                        <option value="nvidia">Nvidia</option>
+                        <option value="amazon">Amazon</option>
+                        <option value="alphabet">Alphabet</option>
+                      </optgroup>
+                      <optgroup label="Krypto">
+                        <option value="bitcoin">Bitcoin</option>
+                        <option value="ethereum">Ethereum</option>
+                        <option value="solana">Solana</option>
+                      </optgroup>
+                      <optgroup label="Edelmetall">
+                        <option value="gold">Gold</option>
+                        <option value="silver">Silber</option>
+                      </optgroup>
+                      <optgroup label="Cash / Sonstiges">
+                        <option value="cash-eur">EUR Cash-Reserve</option>
+                        <option value="manual">Manuelles Asset</option>
+                      </optgroup>
+                    </select>
+                  </label>
+                  <input id="assetEditingId" type="hidden" />
+                  <label class="portfolio-field">
+                    <span>Name</span>
+                    <input id="assetName" placeholder="Name, z. B. MSCI World ETF" />
+                  </label>
+                  <label class="portfolio-field portfolio-field-type">
+                    <span>Typ</span>
+                    <select id="assetType">
+                      <option>ETF</option>
+                      <option>Aktie</option>
+                      <option>Krypto</option>
+                      <option>Edelmetall</option>
+                      <option>Cash</option>
+                      <option>Anleihe</option>
+                      <option>Immobilie</option>
+                      <option>Sonstiges</option>
+                    </select>
+                  </label>
+                  <label class="portfolio-field">
+                    <span>Symbol</span>
+                    <input id="assetSymbol" placeholder="Symbol, z. B. EUNL, BTC" />
+                  </label>
+                  <label class="portfolio-field">
+                    <span>Kurs-Symbol</span>
+                    <input id="assetProviderSymbol" placeholder="z. B. AAPL, NVDA, IWDA.LON" />
+                  </label>
+                  <label class="portfolio-field">
+                    <span>Menge / Anteile</span>
+                    <input id="assetUnits" type="number" step="0.00000001" placeholder="Menge / Anteile" />
+                  </label>
+                  <label class="portfolio-field">
+                    <span>Preis je Einheit</span>
+                    <input id="assetPrice" type="number" step="0.01" placeholder="Preis je Einheit" />
+                  </label>
+                  <label class="portfolio-field portfolio-field-currency">
+                    <span>Währung</span>
+                    <select id="assetCurrency">
+                      <option value="EUR">EUR</option>
+                      <option value="USD">USD</option>
+                      <option value="CHF">CHF</option>
+                      <option value="GBP">GBP</option>
+                    </select>
+                  </label>
+                  <label class="portfolio-field portfolio-field-fx">
+                    <span>FX zu EUR</span>
+                    <input id="assetFxToEUR" type="number" step="0.0001" placeholder="z. B. USD 0.92" />
+                  </label>
+                  <label class="portfolio-field">
+                    <span>Zielanteil %</span>
+                    <input id="assetTargetAllocation" type="number" step="0.1" placeholder="Zielanteil am Portfolio %" />
+                  </label>
+                  <label class="portfolio-field">
+                    <span>Notiz</span>
+                    <input id="assetNote" placeholder="Notiz, z. B. langfristiger Core-Anteil" />
+                  </label>
+                  <button id="addPortfolioAsset" type="button">Asset hinzufügen</button>
+                  <button id="openPortfolioPurchaseAdd" type="button" class="small-btn">Nachkauf eintragen</button>
+                  <button id="openEditingAssetHistory" type="button" class="small-btn hidden">Historie bearbeiten</button>
+                  <button id="refreshAssetFx" type="button" class="small-btn">FX aktualisieren</button>
+                  <button id="cancelPortfolioAssetEdit" type="button" class="small-btn hidden">Bearbeiten abbrechen</button>
+                </div>
+
+                <div class="market-data-panel">
+                  <h4>Optionale Aktien-/ETF-Kursquelle</h4>
+                  <p class="hint">Für ausgewählte Aktien/ETFs kann ein Alpha-Vantage-API-Key lokal im Browser gespeichert werden. Ohne Key bleiben diese Kurse manuell. Kurse können je nach Börsenplatz/Symbol leicht vom Brokerkurs abweichen.</p>
+                  <div class="inline">
+                    <input id="alphaVantageApiKey" type="password" placeholder="Alpha Vantage API-Key optional" />
+                    <button id="saveAlphaVantageKey" type="button" class="small-btn">Key speichern</button>
+                    <button id="clearAlphaVantageKey" type="button" class="small-btn">Key löschen</button>
+                  </div>
+                  <p id="alphaVantageKeyStatus" class="hint">Kein API-Key gespeichert.</p>
+                </div>
+
+                <div id="portfolioAssetList" class="portfolio-asset-list"></div>
+              </div>
+
+              <div class="format-preview">
+                <p>Cash formatiert: <strong id="formattedFiat">0,00 €</strong></p>
+                <p>Portfolio-Wert formatiert: <strong id="formattedPortfolioValue">0,00 €</strong></p>
+                <p>Investiert / Asset-Kostenbasis: <strong id="formattedInvested">0,00 €</strong></p>
+              </div>
+
+              <label>Heute verdient / hinzufügen (€)</label>
+              <div class="inline">
+                <input type="number" id="incomeInput" step="0.01" />
+                <button id="addIncome">Addieren</button>
+              </div>
+
+              <label>Ausgabe / abziehen (€)</label>
+              <div class="inline">
+                <input type="number" id="expenseInput" step="0.01" />
+                <button id="subtractExpense">Abziehen</button>
+              </div>
+
+              <div class="finance-summary-grid result-box">
+                <div>
+                  <p>Cash-Kontostand: <strong id="fiatBalanceDisplay">0 €</strong></p>
+                  <p>Geblockter Monatsdurchlauf: <strong id="blockedMonthlyOutflow">0 €</strong></p>
+                  <p>Freier Cash-Puffer: <strong id="freeFiatBuffer">0 €</strong></p>
+                  <p>Portfolio-Wert: <strong id="portfolioValue">0 €</strong></p>
+                  <p>Net Worth / Finanzvermögen: <strong id="totalWealth">0 €</strong></p>
+                  <p>Finanz-Level: <strong id="financeLevel">0</strong></p>
+                  <p>Portfolio-Kompass: <strong id="portfolioCompass">noch keine Assets</strong></p>
+                </div>
+
+                <div class="debt-panel">
+                  <h3>Rückzahlungen / Verbindlichkeiten</h3>
+                  <p class="hint">
+                    Nur Vormerkung. Diese Werte werden nicht automatisch vom Vermögen abgezogen.
+                  </p>
+
+                  <div id="debtList" class="debt-list"></div>
+
+                  <div class="debt-form">
+                    <input id="debtName" placeholder="Name, z. B. Studienkredit" />
+                    <input id="debtAmount" type="number" step="0.01" placeholder="Restbetrag €" />
+                    <input id="debtStartDate" type="text" placeholder="Start/Fällig ab" />
+                    <input id="debtMonthlyRate" type="number" step="0.01" placeholder="Monatliche Rate €" />
+                    <input id="debtNote" placeholder="Notiz" />
+                    <button id="addDebt">Rückzahlung vormerken</button>
+                  </div>
+                </div>
+              </div>
+
+              <input type="range" id="financeSlider" min="0" max="10" disabled />
+              <p class="level-name" id="financeName"></p>
+
+              <div class="result-box">
+                <h3>Aktualität</h3>
+                <p id="financeCheckStatus" class="hint">Finanzdaten heute noch nicht geprüft.</p>
+
+                <div class="inline">
+                  <button id="checkFinanceToday">Finanzdaten heute geprüft ✓</button>
+                  <button id="uncheckFinanceToday">Haken entfernen</button>
+                </div>
+              </div>
+
+              <div class="result-box">
+              <h3>Monatsbilanz</h3>
+
+              <label>Zeitraum letzter Monat</label>
+              <input type="text" id="periodLastMonth" placeholder="z. B. 01.05.2026 – 31.05.2026" />
+
+              <label>Einnahmen letzter Monat (€)</label>
+              <input type="number" id="incomeLastMonth" step="0.01" />
+
+              <label>Ausgaben letzter Monat (€)</label>
+              <input type="number" id="expensesLastMonth" step="0.01" />
+
+              <p>Ergebnis letzter Monat: <strong id="resultLastMonth">0 €</strong></p>
+
+              <label>Zeitraum vorletzter Monat</label>
+              <input type="text" id="periodBeforeLastMonth" placeholder="z. B. 01.04.2026 – 30.04.2026" />
+
+              <label>Einnahmen vorletzter Monat (€)</label>
+              <input type="number" id="incomeBeforeLastMonth" step="0.01" />
+
+              <label>Ausgaben vorletzter Monat (€)</label>
+              <input type="number" id="expensesBeforeLastMonth" step="0.01" />
+
+              <p>Ergebnis vorletzter Monat: <strong id="resultBeforeLastMonth">0 €</strong></p>
+            </div>
+            </div>
+          </div>
+
+          <div class="card health-card">
+            <h2>Körperliche Gesundheit</h2>
+            <p class="hint">Schlaf, Energie, Beschwerdefreiheit, Ernährung, Regeneration und Vitalität.</p>
+            <div id="healthMetrics"></div>
+
+            <div class="score-line">
+              <span>Gesundheits-Level</span>
+              <strong id="healthScore">0</strong>
+            </div>
+          </div>
+
+          <div class="card life-card">
+            <h2>Lebenssituation</h2>
+            <p class="hint">Materielle Flexibilität, Arbeit, Selbstvermarktung, Wohnen, Mobilität, Sprache und Perspektive.</p>
+            <div id="lifeMetrics"></div>
+
+            <div class="result-box">
+              <p>Kompetenzprofil aus aktiven Skills/Zielen: <strong id="lifeSkillProfile">0%</strong></p>
+            </div>
+
+            <div class="score-line">
+              <span>Lebenssituations-Level</span>
+              <strong id="lifeScore">0</strong>
+            </div>
+          </div>
+
+          <div class="card attraction-card">
+            <h2>Ausstrahlung & Attraktivität</h2>
+            <p class="hint">
+              Berechneter Meta-Wert aus Finanzen, Fitness, Gesundheit, Lebenssituation,
+              Skills/Zielen, Emotion, Geist und Disziplin.
+            </p>
+
+            <div class="result-box">
+              <p>Aktueller Wert: <strong id="attractionScore">0</strong></p>
+              <p id="attractionDescription" class="hint"></p>
+              <p>Gewichtung gesamt: <strong id="weightTotal">100%</strong></p>
+            </div>
+
+            <div id="attractionWeights"></div>
+
+            <button id="resetWeights" class="top-space">Standard-Gewichtung wiederherstellen</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="quick" class="view">
+        <div class="grid">
+          <div class="card neutral-card">
+            <h2>Schnelleingabe</h2>
+            <p class="hint">
+              Hier kannst du die wichtigsten Alltagseinträge schnell setzen, ohne in alle Tabs zu wechseln.
+            </p>
+
+            <div class="quick-week-note-divider"></div>
+
+            <div class="quick-note-head">
+              <h3>Notizen <span id="quickNoteWeekBadge" class="quick-status-date-badge">Woche nicht erzeugt</span></h3>
+              <button id="quickNoteClearAll" type="button" class="danger-soft-btn">Alles löschen</button>
+            </div>
+            <p class="hint">
+              Wichtigste Dinge für diese Woche.
+            </p>
+
+            <div class="inline quick-note-toolbar">
+              <button id="quickNoteInsertArrow" type="button">▶ Pfeil erzeugen</button>
+              <button id="quickNoteInsertCheck" type="button">☐ Abhakpunkt</button>
+              <button id="quickNoteClearDone" type="button">Abgehakte löschen</button>
+              <button id="quickNoteTogglePriority" type="button">Prio-Modus an</button>
+            </div>
+
+            <div id="quickWeeklyNote" class="quick-weekly-note" contenteditable="true" spellcheck="true" data-placeholder="▶ Wichtigster Wochenfokus..."></div>
+          </div>
+          <div class="card quick-status-card">
+            <h2>Heute aktiv <span id="quickStatusDateBadge" class="quick-status-date-badge">–</span></h2>
+            <p class="hint">Tagesstatus für Well, Soziales, Training und Skills. Die Anzeige setzt sich jeden Tag automatisch neu.</p>
+            <div id="quickDailyStatusBoard" class="quick-daily-status-board">
+              <div class="status-quadrant status-fit">
+                <div class="status-quadrant-head"><span>Well</span><strong id="quickFitCount">0/7</strong></div>
+                <div class="status-mini-grid seven-grid fit-grid-compact">
+                  <div id="fitStatusYoga" class="status-mini-tile fit-tile-compact quick-jump-tile" title="Yoga" data-quick-jump="#quickYoga"><span class="emoji">🤸‍♂️</span></div>
+                  <div id="fitStatusBreath" class="status-mini-tile fit-tile-compact quick-jump-tile" title="Atemübung" data-quick-jump="#quickBreath"><span class="emoji">🌬️</span></div>
+                  <div id="fitStatusBodyCare" class="status-mini-tile fit-tile-compact quick-jump-tile" title="Körperpflege" data-quick-jump="#quickBodyCare"><span class="emoji">🚿</span></div>
+                  <div id="fitStatusCold" class="status-mini-tile fit-tile-compact quick-jump-tile" title="Kälte-/Kreislauftraining" data-quick-jump="#quickCold"><span class="emoji">❄️</span></div>
+                  <div id="fitStatusMeditation" class="status-mini-tile fit-tile-compact quick-jump-tile" title="Meditation" data-quick-jump="#quickMeditation"><span class="emoji">🧘‍♂️</span></div>
+                  <div id="fitStatusOrganization" class="status-mini-tile fit-tile-compact quick-jump-tile" title="Organisatorisches" data-quick-jump="#quickOrganization"><span class="emoji">📝</span></div>
+                  <div id="fitStatusOrder" class="status-mini-tile fit-tile-compact quick-jump-tile order-status-tile" title="Ordnung schaffen" data-quick-jump="#quickOrder"><span class="emoji">🧹</span></div>
+                </div>
+              </div>
+              <div class="status-quadrant status-soz">
+                <div class="status-quadrant-head"><span>Soz</span><strong id="quickSocialCount">0</strong></div>
+                <div id="socialStatusMain" class="status-main-tile quick-jump-tile" title="Soziale Praxis heute" data-quick-jump="[data-quick-social]">
+                  <span class="emoji">💬</span>
+                </div>
+                <div id="outingStatusMain" class="status-mini-tile outing-status-tile quick-jump-tile" title="Heute rausgegangen" data-quick-jump="#quickOuting">
+                  <span class="emoji">🍃</span>
+                </div>
+              </div>
+              <div class="status-quadrant status-train">
+                <div class="status-quadrant-head"><span>Train</span><strong id="quickTrainCount">0/2</strong></div>
+                <div id="trainStatusMain" class="status-main-tile train-status-compact quick-jump-tile" title="Training heute" data-quick-jump="#quickTraining">
+                  <span class="emoji">🏋️‍♂️</span>
+                </div>
+                <div id="workStatusMain" class="status-mini-tile work-status-tile quick-jump-tile" title="Work heute" data-quick-jump="#quickWorkCard">
+                  <span class="emoji">💼</span>
+                </div>
+              </div>
+              <div class="status-quadrant status-skill">
+                <div class="status-quadrant-head"><span>Skill</span><strong id="quickSkillCount">0/5</strong></div>
+                <div class="status-mini-grid five-skill-grid">
+                  <div id="skillStatus1" class="status-mini-tile quick-jump-tile" title="Skill-Bereich 1 · Auswandern" data-quick-jump="#quickGoalsList"><span class="emoji">🌍</span></div>
+                  <div id="skillStatus2" class="status-mini-tile quick-jump-tile" title="Skill-Bereich 2 · Lesen" data-quick-jump="#quickGoalsList"><span class="emoji">📖</span></div>
+                  <div id="skillStatus3" class="status-mini-tile quick-jump-tile" title="Skill-Bereich 3 · Bildschirmarbeit" data-quick-jump="#quickGoalsList"><span class="emoji">💻</span></div>
+                  <div id="skillStatus4" class="status-mini-tile quick-jump-tile" title="Skill-Bereich 4 · Wohnsituation" data-quick-jump="#quickGoalsList"><span class="emoji">🏠</span></div>
+                  <div id="skillStatus5" class="status-mini-tile quick-jump-tile" title="Skill-Bereich 5 · Bewerbung" data-quick-jump="#quickGoalsList"><span class="emoji">📄</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="quickWorkCard" class="card finance-card work-card quick-narrow-card">
+            <h2>💼 Work</h2>
+            <p class="hint">Stunden heute eintragen, Netto berechnen und direkt als Einnahme buchen.</p>
+
+            <div class="work-section first">
+              <h4>Stammdaten</h4>
+              <div class="work-grid-v77">
+                <label>Brutto-Stundenlohn (€ / h)
+                  <input type="text" inputmode="decimal" id="quickWorkGrossHourly" />
+                </label>
+                <label>Abzug / Steuer (%)
+                  <input type="text" inputmode="decimal" id="quickWorkDeductionRate" />
+                </label>
+                <label>Netto-Stundenlohn (€ / h)
+                  <input type="text" inputmode="decimal" id="quickWorkNetHourly" readonly />
+                </label>
+              </div>
+            </div>
+
+            <div class="work-section">
+              <h4>Heute</h4>
+              <label>Arbeitsstunden heute
+                <input type="text" inputmode="decimal" id="quickWorkHours" />
+              </label>
+
+              <div class="duration-add-row work-hours-row">
+                <button type="button" data-work-hours-add="0.25">+0,25 h</button>
+                <button type="button" data-work-hours-add="0.5">+0,5 h</button>
+                <button type="button" data-work-hours-add="1">+1,0 h</button>
+                <button type="button" data-work-hours-add="1.5">+1,5 h</button>
+                <button type="button" data-work-hours-add="2">+2,0 h</button>
+                <button type="button" id="quickWorkHoursReset">Stunden auf 0</button>
+              </div>
+            </div>
+
+            <div class="result-box work-result-box">
+              <p>Brutto heute: <strong id="quickWorkGrossToday">0,00 €</strong></p>
+              <p>Netto heute: <strong id="quickWorkNetToday">0,00 €</strong></p>
+              <p>Heute gebucht: <strong id="quickWorkBookedToday">0,00 €</strong></p>
+            </div>
+
+            <div class="inline work-action-row">
+              <button id="quickAddWorkIncome" type="button">Netto heute als Einnahme buchen</button>
+              <button id="quickRemoveWorkToday" type="button">Heute entfernen</button>
+            </div>
+          </div>
+
+          <div class="card finance-card money-card quick-narrow-card">
+            <h2>Geld</h2>
+
+            <label>Manuelle Einnahme hinzufügen (€)</label>
+            <div class="inline">
+              <input type="number" id="quickIncome" step="0.01" />
+              <button id="quickAddIncome">Addieren</button>
+            </div>
+
+            <label>Ausgabe abziehen (€)</label>
+            <div class="inline">
+              <input type="number" id="quickExpense" step="0.01" />
+              <button id="quickSubtractExpense">Abziehen</button>
+            </div>
+
+            <p class="hint">Portfolio-Assets bearbeitest du im Finanzbereich des Dashboards.</p>
+          </div>
+
+
+          <div class="card fitness-card">
+            <h2>Körper & Training</h2>
+            <div class="action-grid">
+              <button id="quickYoga">Yoga heute gemacht</button>
+              <button id="quickTraining">Training heute gemacht</button>
+              <button id="quickBreath">Atemübung heute gemacht</button>
+              <button id="quickCold">Kältetraining heute gemacht</button>
+              <button id="quickBodyCare">Körperpflege heute gemacht</button>
+            </div>
+          </div>
+
+          <div class="card mind-card">
+            <h2>Reflexion</h2>
+            <div class="action-grid">
+              <button id="quickMeditation">Meditation heute gemacht</button>
+              <button id="quickOuting">Heute rausgegangen</button>
+              <button id="quickOrder" class="order-quick-button" type="button" onclick="window.handleQuickOrderClick && window.handleQuickOrderClick(event)">Ordnung schaffen</button>
+              <button id="quickOrganization" type="button">Organisatorisches gemacht</button>
+            </div>
+          </div>
+
+
+          <div class="card gaming-card">
+            <h2>Media Balance / Medien</h2>
+            <p class="hint">Schnell tatsächliche Media Balance eintragen oder den Wochenrahmen korrigieren.</p>
+
+            <div class="result-box cave-soft-box">
+              <p>Wochenrahmen: <strong id="quickCaveFrameLabel">12 h</strong></p>
+              <p>Tatsächlich diese Woche: <strong id="quickCaveActualLabel">0 h</strong></p>
+              <p>Rahmentreue: <strong id="quickCaveAdherenceLabel">10/10</strong></p>
+            </div>
+
+            <label>Wochenrahmen Media Balance</label>
+            <input type="number" id="quickCaveWeekFrameHours" step="0.5" min="0" />
+
+            <label>Tatsächliche Stunden hinzufügen</label>
+            <div class="inline">
+              <input type="number" id="quickCaveActualAdd" step="0.5" min="0" placeholder="z. B. 2" />
+              <button id="quickCaveAddActualHours">Hinzufügen</button>
+            </div>
+
+            <label>Tatsächliche Media Balance diese Woche</label>
+            <input type="number" id="quickCaveActualTotal" step="0.5" min="0" />
+
+            <div class="inline top-space">
+              <button id="quickCaveRemoveActualToday">Heute entfernen</button>
+            </div>
+          </div>
+
+          <div class="card emotion-card">
+            <h2>Soziale Praxis</h2>
+            <div class="action-grid">
+              <button data-quick-social="noticed">Gelegenheit bemerkt</button>
+              <button data-quick-social="smile">Blickkontakt / Lächeln</button>
+              <button data-quick-social="question">Kurze Frage gestellt</button>
+              <button data-quick-social="chat">Chatten / Sprachnachricht</button>
+              <button data-quick-social="call">Telefoniert</button>
+              <button data-quick-social="free">Freier Kontaktimpuls</button>
+              <button data-quick-social="time">Zeit für jemanden genommen</button>
+              <button data-quick-social="help">Jemandem geholfen</button>
+              <button data-quick-social="conversation">Gespräch begonnen</button>
+              <button data-quick-social="personal">Persönliches Detail geteilt</button>
+              <button data-quick-social="event">Event besucht</button>
+              <button data-quick-social="dating">Dating-/soziale Initiative</button>
+              <button data-quick-social="surrender">Hingabe / Flow</button>
+              <button data-quick-social="boundary">Grenze/Wunsch ausgesprochen</button>
+            </div>
+          </div>
+
+          <div class="card goals-card">
+            <h2>Ziele & Skills</h2>
+            <p class="hint">Schnell ein aktives Ziel als erledigt markieren. Die Farben zeigen denselben Aktivitätsstatus wie im Ziel-Tab.</p>
+            <div id="quickGoalsList" class="quick-goals-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="fitness" class="view">
+        <div class="grid">
+          <div class="card fitness-card">
+            <h2>Sport & Fitness</h2>
+            <p class="hint">Der Fitnesswert wird aus Kraft, Ausdauer, Yoga/Beweglichkeit, Atemübungen, Kälte-/Kreislauftraining, Körperpflege und Konstanz berechnet.</p>
+
+            <div class="score-line">
+              <span>Gesamt-Fitness</span>
+              <strong id="fitnessScore">0</strong>
+            </div>
+
+            <p class="level-name" id="fitnessName"></p>
+
+            <label>Kleine Fitness-Notiz</label>
+            <textarea id="fitnessNote" class="mini-note" placeholder="z. B. nächstes Mal 32,5 kg versuchen, Satz-/Wiederholungsnotiz, Trainingsgefühl..."></textarea>
+          </div>
+
+          <div class="card fitness-card">
+            <h2>Kraft</h2>
+            <p class="hint">
+              60 kg bei Bankdrücken, Kreuzheben und Kniebeuge entsprechen ungefähr 8/10.
+              Klimmzüge-Ziel: 10 saubere Wiederholungen.
+            </p>
+
+            <div class="strength-grid">
+              <label>Bankdrücken Arbeitsgewicht kg
+                <input type="number" id="benchKg" step="0.5" />
+              </label>
+              <label>Kreuzheben Arbeitsgewicht kg
+                <input type="number" id="deadliftKg" step="0.5" />
+              </label>
+              <label>Kniebeuge Arbeitsgewicht kg
+                <input type="number" id="squatKg" step="0.5" />
+              </label>
+              <label>Klimmzüge saubere Wiederholungen
+                <input type="number" id="pullups" step="1" />
+              </label>
+            </div>
+
+            <div class="result-box">
+              <p>Kraftwert: <strong id="strengthScore">0</strong></p>
+              <p id="strengthDetails" class="hint"></p>
+            </div>
+          </div>
+
+          <div class="card fitness-card">
+            <h2>Ausdauer</h2>
+            <p class="hint">10 km stabil laufen entspricht aktuell ungefähr 6/10.</p>
+
+            <label>Aktuell stabile Laufdistanz in km</label>
+            <input type="number" id="runKm" step="0.1" />
+
+            <div class="result-box">
+              <p>Ausdauerwert: <strong id="enduranceScore">0</strong></p>
+              <p id="enduranceText" class="hint"></p>
+            </div>
+          </div>
+
+          <div class="card fitness-card">
+            <h2>Yoga & Beweglichkeit</h2>
+            <p class="hint">Der Wert basiert auf Yoga-Einheiten der letzten 28 Tage.</p>
+
+            <label>Ziel-Einheiten in 28 Tagen</label>
+            <input type="number" id="yogaTarget28" step="1" />
+
+            <div class="inline top-space">
+              <button id="markYogaToday">Yoga heute gemacht</button>
+              <button id="removeYogaToday">Heute entfernen</button>
+            </div>
+
+            <div class="result-box">
+              <p>Yoga-Einheiten letzte 28 Tage: <strong id="yogaCount28">0</strong></p>
+              <p>Yoga dieser Monat: <strong id="yogaThisMonth">0</strong></p>
+              <p>Yoga letzter Monat: <strong id="yogaLastMonth">0</strong></p>
+              <p>Beweglichkeitswert: <strong id="mobilityScore">0</strong></p>
+              <p id="yogaText" class="hint"></p>
+            </div>
+          </div>
+
+          <div class="card fitness-card">
+            <h2>Atemübungen</h2>
+            <p class="hint">Zum Beispiel Wim-Hof-Atmung. Der Wert basiert auf Atemübungen der letzten 28 Tage.</p>
+
+            <label>Ziel-Atemübungen in 28 Tagen</label>
+            <input type="number" id="breathTarget28" step="1" />
+
+            <div class="inline top-space">
+              <button id="markBreathToday">Atemübung heute gemacht</button>
+              <button id="removeBreathToday">Heute entfernen</button>
+            </div>
+
+            <div class="result-box">
+              <p>Atemübungen letzte 28 Tage: <strong id="breathCount28">0</strong></p>
+              <p>Atemübungen dieser Monat: <strong id="breathThisMonth">0</strong></p>
+              <p>Atemübungen letzter Monat: <strong id="breathLastMonth">0</strong></p>
+              <p>Atemübungswert: <strong id="breathScore">0</strong></p>
+              <p id="breathText" class="hint"></p>
+            </div>
+          </div>
+
+          <div class="card fitness-card">
+            <h2>Kälte- und Kreislauftraining</h2>
+            <p class="hint">Kalt baden, im See baden oder kalt duschen. Der Wert basiert auf Kälte-/Kreislauf-Einheiten der letzten 28 Tage.</p>
+
+            <label>Ziel-Kältetrainings in 28 Tagen</label>
+            <input type="number" id="coldTarget28" step="1" />
+
+            <div class="inline top-space">
+              <button id="markColdToday">Kältetraining heute gemacht</button>
+              <button id="removeColdToday">Heute entfernen</button>
+            </div>
+
+            <div class="result-box">
+              <p>Kältetrainings letzte 28 Tage: <strong id="coldCount28">0</strong></p>
+              <p>Kältetraining dieser Monat: <strong id="coldThisMonth">0</strong></p>
+              <p>Kältetraining letzter Monat: <strong id="coldLastMonth">0</strong></p>
+              <p>Kältetrainingswert: <strong id="coldScore">0</strong></p>
+              <p id="coldText" class="hint"></p>
+            </div>
+          </div>
+
+          <div class="card fitness-card">
+            <h2>Körperpflege</h2>
+            <p class="hint">Duschen, waschen, frisch machen. Der Wert basiert auf Körperpflege-Einheiten der letzten 28 Tage.</p>
+
+            <label>Ziel-Körperpflege in 28 Tagen</label>
+            <input type="number" id="bodyCareTarget28" step="1" />
+
+            <div class="inline top-space">
+              <button id="markBodyCareToday">Körperpflege heute gemacht</button>
+              <button id="removeBodyCareToday">Heute entfernen</button>
+            </div>
+
+            <div class="result-box">
+              <p>Körperpflege letzte 28 Tage: <strong id="bodyCareCount28">0</strong></p>
+              <p>Körperpflege dieser Monat: <strong id="bodyCareThisMonth">0</strong></p>
+              <p>Körperpflege letzter Monat: <strong id="bodyCareLastMonth">0</strong></p>
+              <p>Körperpflegewert: <strong id="bodyCareScore">0</strong></p>
+              <p id="bodyCareText" class="hint"></p>
+            </div>
+          </div>
+
+          <div class="card fitness-card">
+            <h2>Trainingskonstanz</h2>
+            <p class="hint">Der Wert basiert auf Trainingstagen der letzten 28 Tage.</p>
+
+            <label>Ziel-Trainingstage in 28 Tagen</label>
+            <input type="number" id="trainingTarget28" step="1" />
+
+            <div class="inline top-space">
+              <button id="markTrainingToday">Training heute gemacht</button>
+              <button id="removeTrainingToday">Heute entfernen</button>
+            </div>
+
+            <div class="result-box">
+              <p>Trainingstage letzte 28 Tage: <strong id="trainingCount28">0</strong></p>
+              <p>Training dieser Monat: <strong id="trainingThisMonth">0</strong></p>
+              <p>Training letzter Monat: <strong id="trainingLastMonth">0</strong></p>
+              <p>Konstanzwert: <strong id="consistencyScore">0</strong></p>
+              <p id="consistencyText" class="hint"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="emotion" class="view">
+        <div class="grid">
+          <div class="card emotion-card">
+            <h2>Soziales & Reflexion</h2>
+            <p class="hint">Dieser Bereich trennt Grundkompetenz und Soziale Praxis-Praxis. Kleine Schritte zählen bewusst mit.</p>
+
+            <div class="score-line">
+              <span>Emotionaler Gesamtwert</span>
+              <strong id="emotionTotalScore">0</strong>
+            </div>
+
+            <p class="level-name" id="emotionTotalName"></p>
+
+            <label>Kleine Sozial-/Emotions-Notiz</label>
+            <textarea id="emotionNote" class="mini-note" placeholder="z. B. Beobachtung, Gesprächsimpuls, Grenze, soziale Situation, nächster kleiner Schritt..."></textarea>
+          </div>
+
+
+<div class="card emotion-card">
+            <h2>Event & Soziale Praxis-Budget</h2>
+            <p class="hint">Optional: Wenn ein Event Geld kostet, kannst du die Kosten direkt vom Fiat-Vermögen abziehen.</p>
+
+            <label>Monatliches Soziale Praxis-Budget (€)</label>
+            <input type="number" id="socialBudgetMonthly" step="0.01" />
+
+            <label>Eventkosten (€)</label>
+            <input type="number" id="eventCost" step="0.01" />
+
+            <div class="inline top-space">
+              <button id="addPaidEvent">Event besucht & Kosten abziehen</button>
+            </div>
+
+            <div class="result-box">
+              <p>Soziale Praxis-Ausgaben dieser Monat: <strong id="socialSpentThisMonth">0 €</strong></p>
+              <p>Budget übrig: <strong id="socialBudgetLeft">0 €</strong></p>
+            </div>
+          </div>
+
+
+<div class="card emotion-card">
+            <h2>Soziale Mikropraxis</h2>
+            <p class="hint">
+              Zähle eine Aktion nur, wenn sie bewusst, frei und außerhalb einer funktionalen Rolle passiert ist.
+              Ein freier Kontaktimpuls kann ein guter Wunsch, ein humorvoller Satz oder ein kurzer absichtsloser Kontaktmoment sein — ohne etwas vom anderen zu wollen.
+            </p>
+
+            <label>Zielpunkte in 28 Tagen</label>
+            <input type="number" id="socialTarget28" step="1" />
+
+            <div class="action-grid top-space">
+              <button data-social-action="noticed">Gelegenheit bemerkt</button>
+              <button data-social-action="smile">Blickkontakt / Lächeln</button>
+              <button data-social-action="question">Kurze Frage gestellt</button>
+              <button data-social-action="chat">Chatten / Sprachnachricht</button>
+              <button data-social-action="call">Telefoniert</button>
+              <button data-social-action="free">Freier Kontaktimpuls</button>
+              <button data-social-action="time">Zeit für jemanden genommen</button>
+              <button data-social-action="help">Jemandem geholfen</button>
+              <button data-social-action="conversation">Gespräch begonnen</button>
+              <button data-social-action="personal">Persönliches Detail geteilt</button>
+              <button data-social-action="event">Event besucht</button>
+              <button data-social-action="dating">Dating-/soziale Initiative</button>
+              <button data-social-action="surrender">Hingabe / Flow</button>
+              <button data-social-action="boundary">Grenze/Wunsch ausgesprochen</button>
+            </div>
+
+            <div class="inline top-space">
+              <button id="removeSocialToday">Soziale Praxis-Einträge heute entfernen</button>
+              <button id="openSocialBackfill" type="button">Einträge für Vergangenheit hinzufügen</button>
+            </div>
+
+            <div id="socialBackfillPanel" class="result-box social-backfill-panel hidden">
+              <h3>Vergangenen Soziale Praxis-Eintrag nachtragen</h3>
+              <label>Datum</label>
+              <input type="date" id="socialBackfillDate" />
+              <div id="socialBackfillActions" class="action-grid top-space"></div>
+              <div class="social-backfill-remove-row top-space">
+                <label>Einträge für Datum entfernen
+                  <input type="date" id="socialBackfillRemoveDate" />
+                </label>
+                <button id="removeSocialBackfillForDate" type="button">Einträge dieses Datums entfernen</button>
+                <button id="closeSocialBackfill" type="button">Schließen</button>
+              </div>
+            </div>
+
+            <div class="result-box">
+              <p>Praxispunkte letzte 28 Tage: <strong id="socialPoints28">0</strong></p>
+              <p>Praxiswert: <strong id="socialPracticeScore">0</strong></p>
+              <p>Aktionen dieser Monat: <strong id="socialThisMonth">0</strong></p>
+              <p>Aktionen letzter Monat: <strong id="socialLastMonth">0</strong></p>
+              <p id="socialPracticeText" class="hint"></p>
+            </div>
+
+            <div class="result-box social-legend-box">
+              <h3>Punkte & Bedeutung</h3>
+              <p class="hint">So sind die Soziale Praxis-Mikroaktionen aktuell gewichtet.</p>
+              <div id="socialActionLegend" class="social-action-legend"></div>
+            </div>
+          </div>
+
+
+<div class="card emotion-card">
+            <h2>Emotionale Grundkompetenz</h2>
+            <p class="hint">Kommunikation, Konflikt, Verletzlichkeit, Nähe, Grenzen, Selbstregulation und Initiative.</p>
+            <div id="emotionMetrics"></div>
+
+            <div class="score-line">
+              <span>Grundkompetenz</span>
+              <strong id="emotionBaseScore">0</strong>
+            </div>
+          </div>
+
+
+<div class="card emotion-card">
+            <h2>Letzte Soziale Praxis-Einträge</h2>
+            <div id="socialLogList" class="log-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="protocol" class="view">
+        <div class="card protocol-card">
+          <h2>📓 Tagesprotokoll</h2>
+          <p class="hint">
+            Ab heute laufendes Tagesprotokoll für „Heute aktiv“. Die heutige Zeile ist immer sichtbar und aktualisiert sich direkt mit deinen Schnelleingaben.
+            Das aktuellste Datum steht immer oben.
+          </p>
+
+          <div class="protocol-info-row">
+            <span>🟢 zählt aktuell = liegt im 56-Tage-Fenster</span>
+            <span>⚪ raus = älter als 56 Tage</span>
+            <span>Hervorgehoben = an diesem Tag erledigt</span>
+          </div>
+
+          <p class="protocol-note">
+            Hinweis: Das Protokoll startet ab dem ersten Protokolltag. Die Disziplinberechnung kann zusätzlich ältere gespeicherte Einträge berücksichtigen.
+          </p>
+
+          <div class="inline top-space">
+            <button id="refreshProtocol" type="button">Protokoll aktualisieren</button>
+            <button id="toggleProtocolEdit" type="button">Vergangene Tage bearbeiten</button>
+          </div>
+
+          <div class="protocol-summary" id="protocolSummary">Protokoll wird geladen…</div>
+
+          <div class="protocol-table-wrap">
+            <table class="protocol-table protocol-table-daily">
+              <thead>
+                <tr>
+                  <th>Datum</th>
+                  <th>Well</th>
+                  <th>Train</th>
+                  <th>Soz</th>
+                  <th>Skill</th>
+                  <th>Wertung</th>
+                </tr>
+              </thead>
+              <tbody id="protocolTableBody">
+                <tr><td colspan="6">Protokoll wird geladen…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="mind" class="view">
+        <div class="grid">
+          <div class="card mind-card">
+            <h2>Reflexion</h2>
+            <p class="hint">Weltbild, Perspektivenfähigkeit, Intuition, Loslassen, Klarheit, Meditation und Disziplin.</p>
+
+            <div class="score-line">
+              <span>Geist-Level</span>
+              <strong id="mindScore">0</strong>
+            </div>
+
+            <p class="level-name" id="mindName"></p>
+
+            <label>Kleine Geist-/Denk-Notiz</label>
+            <textarea id="mindNote" class="mini-note" placeholder="z. B. Gedanke, Podcast-Idee, Perspektive, Loslassen, Fokus für morgen..."></textarea>
+          </div>
+
+          <div class="card mind-card">
+            <h2>Gedankenwelt</h2>
+            <div id="mindMetrics"></div>
+          </div>
+
+          <div class="card mind-card">
+            <h2>Meditation / Vipassana / Stille</h2>
+            <p class="hint">Meditation zählt als geistige Praxis und als Disziplinübung.</p>
+
+            <label>Ziel-Meditationen in 28 Tagen</label>
+            <input type="number" id="meditationTarget28" step="1" />
+
+            <div class="inline top-space">
+              <button id="markMeditationToday">Meditation heute gemacht</button>
+              <button id="removeMeditationToday">Heute entfernen</button>
+            </div>
+
+            <div class="result-box">
+              <p>Meditationen letzte 28 Tage: <strong id="meditationCount28">0</strong></p>
+              <p>Meditationen dieser Monat: <strong id="meditationThisMonth">0</strong></p>
+              <p>Meditationen letzter Monat: <strong id="meditationLastMonth">0</strong></p>
+              <p>Meditationswert: <strong id="meditationScore">0</strong></p>
+              <p id="meditationText" class="hint"></p>
+            </div>
+          </div>
+
+
+          <div class="card mind-card">
+            <h2>Draußen gewesen</h2>
+            <p class="hint">In der Natur, frische Luft, Sonne, in die Stadt gegangen oder einfach draußen auf einer Bank gesessen. Der Wert basiert auf den letzten 28 Tagen.</p>
+
+            <label>Ziel-Draußen in 28 Tagen</label>
+            <input type="number" id="mindOutingTarget28" step="1" />
+
+            <div class="inline top-space">
+              <button id="markOutingToday">Heute rausgegangen</button>
+              <button id="removeOutingToday">Heute entfernen</button>
+            </div>
+
+            <div class="result-box">
+              <p>Draußen letzte 28 Tage: <strong id="outingCount28">0</strong></p>
+              <p>Draußen dieser Monat: <strong id="outingThisMonth">0</strong></p>
+              <p>Draußen letzter Monat: <strong id="outingLastMonth">0</strong></p>
+              <p>Draußen-Wert: <strong id="outingScore">0</strong></p>
+              <p id="outingText" class="hint"></p>
+            </div>
+          </div>
+
+          
+
+          <div class="card mind-card order-card" id="mindOrderCard">
+            <h2>🧹 Ordnung schaffen <span class="subtle-title">(klarer Arbeitsplatz)</span></h2>
+            <p class="hint">
+              Digitale und äußere Reizquellen reduzieren: Desktop aufräumen, Browser-Tabs schließen,
+              Dateien/Downloads ordnen, Zimmer und Schreibtisch von herumliegenden Kleinigkeiten befreien
+              und Listen/Orga wieder übersichtlich sortieren.
+            </p>
+            <p class="hint order-effect-text">
+              Effekt: weniger Reibung · weniger Ablenkung · weniger offene Schleifen · mehr Fokus · mehr Kontrolle · klarerer Einstieg in tiefe Arbeit.
+            </p>
+
+            <div class="order-progress-line">
+              <span>Heute</span>
+              <strong id="orderTodayStatus">0/5 offen</strong>
+            </div>
+
+            <div class="order-check-grid">
+              <button type="button" id="orderDesktop" data-order-key="desktop" onclick="window.handleOrderButtonClick && window.handleOrderButtonClick(event, 'desktop')"><span class="order-button-label">🖥 Desktop sortiert</span><span class="order-button-count" data-order-count="desktop">0/1</span></button>
+              <button type="button" id="orderTabs" data-order-key="tabs" onclick="window.handleOrderButtonClick && window.handleOrderButtonClick(event, 'tabs')"><span class="order-button-label">🌐 Tabs geschlossen</span><span class="order-button-count" data-order-count="tabs">0/1</span></button>
+              <button type="button" id="orderFiles" data-order-key="files" onclick="window.handleOrderButtonClick && window.handleOrderButtonClick(event, 'files')"><span class="order-button-label">📁 Dateien/Downloads geordnet</span><span class="order-button-count" data-order-count="files">0/1</span></button>
+              <button type="button" id="orderRoom" data-order-key="room" onclick="window.handleOrderButtonClick && window.handleOrderButtonClick(event, 'room')"><span class="order-button-label">🧺 Zimmer & Schreibtisch aufgeräumt</span><span class="order-button-count" data-order-count="room">0/1</span></button>
+              <button type="button" id="orderLists" data-order-key="lists" onclick="window.handleOrderButtonClick && window.handleOrderButtonClick(event, 'lists')"><span class="order-button-label">📝 Listen & Orga sortiert</span><span class="order-button-count" data-order-count="lists">0/1</span></button>
+            </div>
+
+            <div class="inline top-space">
+              <button type="button" id="resetOrderToday" onclick="window.handleResetOrderClick && window.handleResetOrderClick(event)">Heute entfernen</button>
+            </div>
+
+            <div class="order-subsection-divider"></div>
+            <div class="order-organization-panel">
+              <h3>📝 Organisatorisches</h3>
+              <p class="hint">Konkrete Orga-Aufgaben erledigt. Nicht nur sortieren, sondern tatsächlich abgearbeitet. Bedeutet: ein bis zwei oder mehr Orga-Aufgaben gemacht — es muss nicht die ganze Liste leer sein.</p>
+              <div class="order-progress-line order-org-status-line">
+                <span>Heute</span>
+                <strong id="organizationTodayStatus">0/1 offen</strong>
+              </div>
+              <div class="inline top-space">
+                <button type="button" id="markOrganizationMind">Organisatorisches gemacht</button>
+                <button type="button" id="removeOrganizationMind">Heute entfernen</button>
+              </div>
+            </div>
+          </div>
+
+<div class="card gaming-card">
+            <h2>Aufmerksamkeit & Medien-Rahmen</h2>
+            <p class="hint">
+              Der Höhlenkalender ist hier geistig verankert: Worauf die Aufmerksamkeit ruht, bestimmt oft den Verlauf des Tages.
+              Der Rahmen hilft, Medien als bewussten Rückzug zu halten statt in unbewusstes Wegdriften zu kippen.
+            </p>
+
+            <div class="result-box cave-soft-box">
+              <p>Wochenrahmen: <strong id="mindCaveFrameHours">12 h</strong></p>
+              <p>Geplante Media Balance: <strong id="mindCavePlannedHours">0 h</strong></p>
+              <p>Nächste Medien-/Media Balance: <strong id="mindCaveNextBlock">keine geplant</strong></p>
+              <p>Tatsächliche digitale Medien: <strong id="mindCaveActualHours">0 h</strong></p>
+              <p>Abweichung vom Wochenrahmen: <strong id="mindCaveDeviation">0 h</strong></p>
+              <p>Rahmentreue: <strong id="mindCaveAdherence">10/10</strong></p>
+            </div>
+
+            <label>Wochenrahmen Media Balance</label>
+            <input type="number" id="mindCaveWeekFrameHours" step="0.5" min="0" />
+
+            <label>Tatsächliche Stunden hinzufügen</label>
+            <div class="inline">
+              <input type="number" id="mindCaveActualAdd" step="0.5" min="0" placeholder="z. B. 2" />
+              <button id="mindCaveAddActualHours">Hinzufügen</button>
+            </div>
+
+            <label>Tatsächliche Media Balance diese Woche</label>
+            <input type="number" id="mindCaveActualInput" step="0.5" min="0" />
+
+            <div class="inline top-space">
+              <button id="mindCaveRemoveActualToday">Heute entfernen</button>
+            </div>
+          </div>
+
+
+          <div class="card discipline-card">
+            <h2>Disziplin</h2>
+            <p class="hint">
+              Disziplin wird automatisch aus aktiven Umsetzungswerten berechnet.
+              Training, Yoga, Atemübungen, Kältetraining, Körperpflege, Rausgehen, Meditation, soziale Praxis und Medien-Rahmentreue werden aus den letzten 56 Tagen berechnet.
+            </p>
+
+            <div class="result-box">
+              <p>Skill-Aktivität: <strong id="disciplineSkills">0</strong></p>
+              <p>Training-Konstanz: <strong id="disciplineTraining">0</strong></p>
+              <p>Yoga-Konstanz: <strong id="disciplineYoga">0</strong></p>
+              <p>Atem-Konstanz: <strong id="disciplineBreath">0</strong></p>
+              <p>Rausgehen-Konstanz: <strong id="disciplineOuting">0</strong></p>
+              <p>Medien-Rahmentreue: <strong id="disciplineMediaFrame">0</strong></p>
+              <p>Kälte-Konstanz: <strong id="disciplineCold">0</strong></p>
+              <p>Körperpflege-Konstanz: <strong id="disciplineBodyCare">0</strong></p>
+              <p>Meditation-Konstanz: <strong id="disciplineMeditation">0</strong></p>
+              <p>Soziale Praxis: <strong id="disciplineSocial">0</strong></p>
+            </div>
+
+            <div class="result-box discipline-breakdown-box">
+              <h3>Berechnung</h3>
+              <p class="hint">
+                Dein Disziplinwert ist ein gewichteter Durchschnitt. Hier siehst du, welcher Baustein mit welchem Gewicht einfließt.
+              </p>
+              <div id="disciplineBreakdown" class="discipline-breakdown"></div>
+            </div>
+
+            <div class="score-line">
+              <span>Disziplin-Level</span>
+              <strong id="disciplineScore">0</strong>
+            </div>
+
+            <p class="level-name" id="disciplineName"></p>
+
+            <div class="discipline-logic-note">
+              <p>
+                Disziplin wertet die <strong>letzten 56 Tage</strong>.
+                Deine 28-Tage-Ziele werden dafür doppelt gerechnet; alte Einträge fallen täglich gleitend heraus.
+                Medien-Rahmentreue zählt wochenaktuell.
+              </p>
+            </div>
+          </div>
+
+          <div class="card discipline-card">
+            <h2>Disziplin-Gewichtung</h2>
+            <p class="hint">
+              Hier stellst du ein, wie stark die einzelnen Bausteine in den Disziplinwert einfließen.
+              Die Werte müssen nicht exakt 100% ergeben; gerechnet wird immer relativ zur Gesamtsumme.
+            </p>
+
+            <div class="result-box">
+              <p>Gewichtung gesamt: <strong id="disciplineWeightTotal">100%</strong></p>
+            </div>
+
+            <div id="disciplineWeights"></div>
+
+            <button id="resetDisciplineWeights" class="top-space">Standard-Gewichtung wiederherstellen</button>
+          </div>
+
+
+        </div>
+
+        <div class="card mind-card mind-planner-card">
+          <div class="card-header">
+            <div>
+              <h2>Wochenplan</h2>
+              <p class="hint">
+                Ein gedanklicher Wochenrahmen für Tagesstruktur, Arbeitsblöcke, Studium, Fitness und Routinen.
+                Acht Tagesspalten: Sonntag als Planungstag, danach Montag bis Sonntag.
+              </p>
+            </div>
+          </div>
+
+          <div class="cave-actions">
+            <button id="mindPlanGenerateWeek">Neue Woche ab aktuellem Sonntag erzeugen</button>
+            <button id="mindPlanToggleEarlyHours">0–6 Uhr anzeigen</button>
+            <button id="mindPlanToggleLateHours">22–24 Uhr anzeigen</button>
+            <button id="mindPlanClearCalendar">Kalender leeren</button>
+            <button id="mindPlanClearSundayPlanning">SO-Planung löschen</button>
+          </div>
+
+          <div class="result-box mind-plan-soft-box">
+            <div class="mind-plan-summary-grid">
+              <div class="mind-plan-summary-main">
+                <div class="mind-plan-summary-row">
+                  <span>Aktuelle Woche</span>
+                  <strong id="mindPlanWeekStartLabel">noch nicht erzeugt</strong>
+                </div>
+                <div class="mind-plan-summary-row">
+                  <span>Geplante Zeit im Kalender</span>
+                  <strong id="mindPlanPlannedHours">0 h</strong>
+                </div>
+                <div class="mind-plan-next-wrap">
+                  <span class="mind-plan-summary-label">Nächster Zeitblock</span>
+                  <div id="mindPlanNextBlock" class="mind-plan-next-block is-empty">keine geplant</div>
+                </div>
+              </div>
+              <div class="mind-plan-summary-side">
+                <span class="mind-plan-summary-label">Nach Typ</span>
+                <div id="mindPlanTypeBreakdown" class="mind-plan-type-list">
+                  <div class="mind-plan-type-item is-empty">noch nichts geplant</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="mindPlanBlockModal" class="cave-modal hidden" role="dialog" aria-modal="true" aria-labelledby="mindPlanBlockModalTitle">
+            <div class="cave-modal-card mind-card">
+              <div class="card-header">
+                <h2 id="mindPlanBlockModalTitle">Zeitblock erstellen</h2>
+                <button id="mindPlanCloseModal" class="small-btn">Schließen</button>
+              </div>
+
+              <p class="hint">
+                Ausgewählter Start: <strong id="mindPlanSelectedSlot">keiner</strong>
+              </p>
+
+              <label>Titel</label>
+              <input type="text" id="mindPlanBlockTitle" placeholder="z. B. Arbeitsblock 1" />
+
+              <label>Dauer in Stunden</label>
+              <input type="number" id="mindPlanBlockDuration" step="0.5" min="0" value="0" />
+              <div class="duration-add-row" data-duration-target="mindPlanBlockDuration">
+                <button type="button" data-duration-add="0.5">+0,5</button>
+                <button type="button" data-duration-add="1">+1,0</button>
+                <button type="button" data-duration-add="1.5">+1,5</button>
+                <button type="button" data-duration-add="2">+2,0</button>
+                <button type="button" data-duration-add="2.5">+2,5</button>
+                <button type="button" data-duration-add="3">+3,0</button>
+                <button type="button" id="mindPlanBlockPulseToggle" class="pulse-toggle-btn" aria-pressed="false">Blinken</button>
+              </div>
+
+              <label>Typ</label>
+              <select id="mindPlanBlockType" class="toolbar-select cave-select">
+                <option value="morning">Morgenroutine</option>
+                <option value="work1">Arbeitsblock 1</option>
+                <option value="work2">Arbeitsblock 2</option>
+                <option value="work3">Arbeitsblock 3</option>
+                <option value="job">Arbeiten</option>
+                <option value="study">Studium</option>
+                <option value="fitness">Fitness</option>
+                <option value="relax">Entspannung / Medien</option>
+                <option value="food">Essen</option>
+                <option value="travel">Reisezeit</option>
+                <option value="event">Event</option>
+                <option value="nature">In der Natur sein</option>
+                <option value="city">In die Stadt gehen</option>
+                <option value="free">Freier Block</option>
+              </select>
+
+              <label>Notiz</label>
+              <textarea id="mindPlanBlockNote" class="small-textarea" placeholder="z. B. Fokus, Aufgabe, Reihenfolge, nächster Schritt..."></textarea>
+
+              <div class="toolbar cave-formatbar">
+                <label class="checkbox-line"><input type="checkbox" id="mindPlanBlockBold" /> fett</label>
+                <label class="checkbox-line"><input type="checkbox" id="mindPlanBlockItalic" /> kursiv</label>
+                <label class="checkbox-line"><input type="checkbox" id="mindPlanBlockUnderline" /> unterstrichen</label>
+                <input type="color" id="mindPlanBlockTextColor" value="#ffffff" />
+              </div>
+
+              <div class="inline top-space">
+                <button id="mindPlanCreateBlock">Block eintragen</button>
+                <button id="mindPlanResetBlockForm" type="button">Formular leeren</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="top-space mind-plan-calendar-scroll cave-scroll-shell">
+            <div class="calendar-scroll-top" data-scroll-sync="mindPlanCalendarScroll"><div></div></div>
+            <div id="mindPlanCalendarScroll" class="calendar-scroll-main">
+              <div id="mindPlanCalendarGrid" class="cave-calendar-grid mind-plan-calendar-grid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="goals" class="view">
+        <div class="card neutral-card">
+          <h2>Ziele & Skills</h2>
+          <p class="hint">
+            Ziele wie Englisch B2 → C1, Russisch, Bachelorarbeit, IT-Skills oder Portfolio.
+            Aktive Ziele fließen in Skillwert, Lebenssituation, Disziplin und Attraktivität ein.
+          </p>
+
+          <div class="goal-form">
+            <input id="goalName" placeholder="Name, z. B. Russisch" />
+            <input id="goalStart" placeholder="Start, z. B. 0% oder B2" />
+            <input id="goalTarget" placeholder="Ziel, z. B. 100% oder C1" />
+            <input id="goalDaily" type="number" step="0.0001" placeholder="Tageswert %, z. B. 0.02" />
+            <input id="goalDailyRequiredClicks" type="number" min="1" step="1" placeholder="Tagesziel-Klicks, z. B. 5" />
+            <select id="goalArea">
+              <option value="1">Skill-Bereich 1 · Auswandern</option>
+              <option value="2">Skill-Bereich 2 · Lesen</option>
+              <option value="3">Skill-Bereich 3 · Bildschirmarbeit</option>
+              <option value="4">Skill-Bereich 4 · Wohnsituation</option>
+              <option value="5">Skill-Bereich 5 · Bewerbung</option>
+            </select>
+            <button id="addGoal">Ziel hinzufügen</button>
+            <button id="addEndlessGoal" type="button">Endlosziel hinzufügen</button>
+          </div>
+        </div>
+
+        <div class="card goals-card">
+          <h2>Ziel-Übersicht</h2>
+          <div class="goal-summary-grid">
+            <div><span>Aktive Ziele</span><strong id="activeGoalCount">0</strong></div>
+            <div><span>Durchschnitt aktiv</span><strong id="goalAverage">0%</strong></div>
+            <div><span>Grün</span><strong id="goalGreenCount">0</strong></div>
+            <div><span>Orange</span><strong id="goalOrangeCount">0</strong></div>
+            <div><span>Rot</span><strong id="goalRedCount">0</strong></div>
+            <div><span>Inaktiv</span><strong id="goalInactiveCount">0</strong></div>
+          </div>
+          <div class="inline top-space">
+            <button id="undoTodayGoalCompletions" type="button">Heutige Ziel-Erledigungen zurücksetzen</button>
+          </div>
+          <p class="hint">Setzt nur heutige „Heute erledigt“-Klicks zurück. Manuelle Prozentänderungen bleiben unberührt.</p>
+        </div>
+
+        <div id="goalsList" class="goals-list"></div>
+
+        <div id="goalEditModal" class="modal hidden">
+          <div class="modal-content">
+            <div class="modal-head">
+              <h3>Ziel bearbeiten</h3>
+              <button id="goalEditClose" type="button">Schließen</button>
+            </div>
+
+            <input type="hidden" id="goalEditId" />
+
+            <label>Name</label>
+            <input id="goalEditName" />
+
+            <label>Start</label>
+            <input id="goalEditStart" />
+
+            <label>Ziel</label>
+            <input id="goalEditTarget" />
+
+            <label class="checkbox-line">
+              <input id="goalEditEndless" type="checkbox" />
+              Endlosziel
+            </label>
+
+            <label>Fortschritt (%)</label>
+            <input id="goalEditProgress" type="number" step="0.0001" />
+
+            <label>Tageswert (%)</label>
+            <input id="goalEditDaily" type="number" step="0.0001" />
+
+            <label>Tagesziel-Klicks</label>
+            <input id="goalEditDailyRequiredClicks" type="number" min="1" step="1" />
+
+            <label>Skill-Bereich</label>
+            <select id="goalEditArea" class="toolbar-select">
+              <option value="1">Skill-Bereich 1 · Auswandern</option>
+              <option value="2">Skill-Bereich 2 · Lesen</option>
+              <option value="3">Skill-Bereich 3 · Bildschirmarbeit</option>
+              <option value="4">Skill-Bereich 4 · Wohnsituation</option>
+              <option value="5">Skill-Bereich 5 · Bewerbung</option>
+            </select>
+
+            <div class="inline top-space">
+              <button id="goalEditSave" type="button">Änderungen speichern</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="backup" class="view">
+
+        <div class="card neutral-card pwa-install-card">
+          <h2>App installieren</h2>
+          <p class="hint">Wenn dein Browser es anbietet, kannst du dieses Dashboard als eigene App installieren. Auf Desktop erscheint meist ein Installieren-Symbol in der Adressleiste. Auf dem Handy nutze „Zum Startbildschirm hinzufügen“.</p>
+          <div class="result-box">
+            <p><strong>Desktop:</strong> Browser-Adressleiste → Installieren / App installieren.</p>
+            <p><strong>Android:</strong> Browser-Menü → App installieren oder Zum Startbildschirm hinzufügen.</p>
+            <p><strong>iPhone/iPad:</strong> Teilen → Zum Home-Bildschirm.</p>
+          </div>
+        </div>
+
+
+
+    
+
+        <div class="card neutral-card">
+          <h2>Backup & Wiederherstellung</h2>
+
+          <div class="guide-box">
+            <h3>So werden deine Daten gespeichert</h3>
+            <p>
+              Die Seite speichert deine Eingaben automatisch im lokalen Browser-Speicher
+              deines aktuellen Browsers. Dieser Speicher heißt <strong>localStorage</strong>.
+            </p>
+
+            <p>
+              Das bedeutet: Wenn du diese Datei im selben Browser wieder öffnest, bleiben deine Daten normalerweise erhalten.
+              Sie liegen aber nicht automatisch sichtbar als Datei im Ordner. Darum solltest du regelmäßig ein JSON-Backup exportieren.
+            </p>
+
+            <h3>Empfohlene Sicherung</h3>
+            <ol>
+              <li>Klicke regelmäßig auf <strong>Backup-Datei herunterladen</strong>.</li>
+              <li>Dadurch entsteht eine JSON-Datei mit Zeitstempel.</li>
+              <li>Lege diese Datei direkt in deinen Dashboard-Ordner.</li>
+            </ol>
+
+            <pre>life-dashboard-public/
+├── index.html
+├── style.css
+├── app.js
+└── life-dashboard-public-backup-2026-06-14-09-30.json</pre>
+
+            <h3>Wiederherstellung</h3>
+            <ol>
+              <li>Öffne <strong>index.html</strong>.</li>
+              <li>Gehe auf <strong>Backup</strong>.</li>
+              <li>Klicke auf <strong>Backup-Datei importieren</strong>.</li>
+              <li>Wähle deine gespeicherte JSON-Datei aus.</li>
+              <li>Die Seite lädt danach den gespeicherten Stand wieder.</li>
+            </ol>
+
+            <h3>Save-Code</h3>
+            <p>
+              Mit <strong>Save-Code erzeugen</strong> kannst du den kompletten Speicher als Text sichern.
+              Das ist nützlich, wenn du den Speicherstand zusätzlich kopieren oder extern ablegen möchtest.
+            </p>
+          </div>
+
+          <div class="result-box backup-status-box">
+            <h3>Speicherstatus</h3>
+            <div class="backup-status-grid">
+              <div><span>Version</span><strong id="backupAppVersion">public-v23</strong></div>
+              <div><span>Speicher-Schlüssel</span><strong id="backupStorageKey">modularLifeDashboardPublicData</strong></div>
+              <div><span>Letzte Speicherung</span><strong id="backupSavedAt">–</strong></div>
+              <div><span>Speichergröße</span><strong id="backupSize">–</strong></div>
+              <div><span>Gerät</span><strong id="backupDeviceName">–</strong></div>
+              <div><span>Migration</span><strong id="backupMigrationInfo">–</strong></div>
+              <div><span>Letzter Export</span><strong id="backupExportInfo">–</strong></div>
+              <div><span>Letzter Import</span><strong id="backupImportInfo">–</strong></div>
+              <div class="wide"><span>Lokale Notfallkopie</span><strong id="backupEmergencyInfo">–</strong></div>
+              <div class="wide build-diagnostic-box" id="buildDiagnosticBox">
+                <span>Aktiver Build-Test</span>
+                <strong>
+                  <span id="buildIndexStatus">index.html Public V23 geladen</span>
+                  <span id="buildAppStatus">app.js noch nicht bestätigt</span>
+                  <span id="buildCssStatus">style.css noch nicht bestätigt</span>
+                </strong>
+              </div>
+            </div>
+            <p class="hint">Vor Import, Save-Code-Laden oder Reset wird automatisch eine lokale Notfallkopie im Browser angelegt.</p>
+          </div>
+
+          <label>Gerätename für Backups</label>
+          <input type="text" id="deviceName" placeholder="z. B. Laptop, Desktop" />
+
+          <div class="backup-actions">
+            <button id="exportFile">Backup-Datei herunterladen</button>
+
+            <label class="file-label">
+              Backup-Datei importieren
+              <input type="file" id="importFile" accept="application/json" />
+            </label>
+
+            <button id="copySave">Save-Code erzeugen</button>
+            <button id="loadSave">Save-Code laden</button>
+            <button id="refreshStorageStatus">Speicherstatus aktualisieren</button>
+            <button id="showLocalStorage">Lokalen Speicher anzeigen</button>
+            <button id="restoreEmergencyBackup">Notfallkopie wiederherstellen</button>
+            <button id="resetLocalStorage" class="danger-btn">Lokalen Speicher zurücksetzen</button>
+          </div>
+
+          <textarea id="saveCode" placeholder="Hier erscheint dein Save-Code oder du fügst hier einen alten Save-Code ein."></textarea>
+        </div>
+      </section>
+
+      <section id="mindfulness" class="view">
+        <div class="mindfulness-hero">
+          <div>
+            <h2>Achtsamkeit</h2>
+            <p class="subtitle">Nicht von außen nach innen. Von innen nach außen.</p>
+          </div>
+          <p class="mindfulness-quote">
+            Damit du zur Anwesenheit (Würde / Wertschätzung) im Außen beitragen kannst, brauchst du Anwesenheit im Inneren.
+          </p>
+        </div>
+
+        <div class="mindfulness-grid">
+          <div class="card mindfulness-card mindfulness-main-card">
+            <h2>Präsenz-Level</h2>
+            <p class="hint">
+              Dieser Wert ist keine Leistung. Er ist nur eine ruhige Standortbestimmung:
+              Wie sehr erkenne ich Gedanken, Angst und Kontrolle als etwas, das da sein darf — ohne eins damit zu werden?
+            </p>
+
+            <div class="metric-row mindfulness-level-row">
+              <label>Tiefe / Präsenz</label>
+              <input type="range" id="presenceLevel" min="0" max="10" />
+              <strong id="presenceLevelValue">0</strong>
+              <div class="metric-description" id="presenceDescription"></div>
+            </div>
+
+            <div class="result-box mindfulness-soft-box">
+              <p>Dieser Bereich wird bewusst <strong>nicht</strong> in Finanzen, Fitness, Disziplin oder Attraktivität eingerechnet.</p>
+              <p class="hint">Er ist der Gegenpol zur Optimierung: Raum, Mut, Loslassen, Seele, Innen → Außen.</p>
+            </div>
+          </div>
+
+          <div class="card mindfulness-card">
+            <h2>Heute bemerkt</h2>
+            <p class="hint">
+              Sanfte Marker. Keine Pflicht, keine Serie, kein Leistungsdruck. Ein Klick bedeutet nur:
+              Ich habe mich erinnert.
+            </p>
+
+            <label>Moment-Notiz optional</label>
+            <input type="text" id="mindfulnessMomentNote" placeholder="z. B. Angst im Körper gespürt und da sein lassen" />
+
+            <div class="action-grid top-space mindfulness-actions">
+              <button data-mindfulness-action="identity">Identifikation bemerkt</button>
+              <button data-mindfulness-action="fear">Angst da sein lassen</button>
+              <button data-mindfulness-action="control">Kontrolle losgelassen</button>
+              <button data-mindfulness-action="impulse">Impuls losgelassen</button>
+              <button data-mindfulness-action="natural">Natürlich gehandelt</button>
+            </div>
+
+            <div class="inline top-space">
+              <button id="removeMindfulnessToday">Heutige Achtsamkeits-Momente entfernen</button>
+            </div>
+          </div>
+
+          <div class="card mindfulness-card">
+            <h2>Reflexion</h2>
+            <p class="hint">Hier darf es weich und unvollständig bleiben. Es ist kein Zielbericht.</p>
+
+            <label>Notiz 1</label>
+            <textarea id="mindfulnessMonthlyIntention" class="small-textarea" placeholder="Was darf diesen Monat innerlich Raum bekommen?"></textarea>
+
+            <label>Notiz 2</label>
+            <textarea id="mindfulnessTodayInsight" class="small-textarea" placeholder="Was habe ich heute bemerkt?"></textarea>
+
+            <label>Notiz 3</label>
+            <textarea id="mindfulnessAllowed" class="small-textarea" placeholder="Welche Angst, Spannung, Emotion oder Kontrolle durfte da sein?"></textarea>
+
+            <label>Notiz 4</label>
+            <textarea id="mindfulnessEmergence" class="small-textarea" placeholder="Welcher Impuls oder welche Handlung entstand nicht durch Druck, sondern natürlich?"></textarea>
+          </div>
+
+          <div class="card mindfulness-card">
+            <h2>Sanfte Monatsübersicht</h2>
+            <div class="mindfulness-stats">
+              <div><span>Achtsame Momente</span><strong id="mindfulnessMomentsMonth">0</strong></div>
+              <div><span>Mut-Momente</span><strong id="mindfulnessCourageMonth">0</strong></div>
+              <div><span>Loslass-Momente</span><strong id="mindfulnessReleaseMonth">0</strong></div>
+              <div><span>Natürlich entstanden</span><strong id="mindfulnessNaturalMonth">0</strong></div>
+            </div>
+
+            <h3 class="top-space">Letzte Einträge</h3>
+            <div id="mindfulnessLogList" class="log-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="gaming" class="view">
+        <div class="cave-hero">
+          <div class="cave-image-panel">
+            <img src="hoehlenbild.png" alt="Media Balance Bild" class="cave-real-image" />
+          </div>
+
+          <div class="cave-intro">
+            <h2>Media Balanceen</h2>
+            <p class="subtitle">Digitale Medien und Rückzugszeiten als klarer Wochenrahmen.</p>
+            <p class="mindfulness-quote cave-quote">
+              Ich lege fest, wann ich verschwinde — und auch, wann ich wieder auftauche.
+            </p>
+
+            <div class="cave-actions">
+              <button id="caveGenerateWeek">Neue Woche ab aktuellem Sonntag erzeugen</button>
+              <button id="caveToggleEarlyHours">0–6 Uhr anzeigen</button>
+              <button id="caveToggleLateHours">22:30–24 Uhr anzeigen</button>
+              <button id="caveClearCalendar">Kalender leeren</button>
+            </div>
+
+            <div class="result-box cave-soft-box">
+              <p>Aktuelle Woche: <strong id="caveWeekStartLabel">noch nicht erzeugt</strong></p>
+              <p>Wochenrahmen: <strong id="caveFrameHoursLabel">12 h</strong></p>
+              <p>Geplante digitale Medien im Kalender: <strong id="cavePlannedHours">0 h</strong></p>
+              <p>Nach Typ: <strong id="caveTypeBreakdown">noch nichts geplant</strong></p>
+              <p>Nächste Medien-/Media Balance: <strong id="caveNextBlock">keine geplant</strong></p>
+              <p>Tatsächliche digitale Medien: <strong id="caveActualHoursLabel">0 h</strong></p>
+              <p>Abweichung vom Wochenrahmen: <strong id="caveDeviation">0 h</strong></p>
+              <p>Rahmentreue: <strong id="caveAdherence">10/10</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid cave-compact-grid">
+          <div class="card gaming-card">
+            <h2>Rahmen prüfen</h2>
+            <p class="hint">
+              Die Rahmentreue bewertet nicht, ob digitale Medien gut oder schlecht sind.
+              Sie zeigt nur, wie nah die tatsächliche Zeit am bewusst gesetzten Rahmen lag.
+            </p>
+
+            <label>Wochenrahmen Media Balance</label>
+            <input type="number" id="caveWeekFrameHours" step="0.5" min="0" />
+
+            <label>Tatsächliche Stunden hinzufügen</label>
+            <div class="inline">
+              <input type="number" id="caveActualAdd" step="0.5" min="0" placeholder="z. B. 2" />
+              <button id="caveAddActualHours">Hinzufügen</button>
+            </div>
+
+            <label>Tatsächliche Media Balance diese Woche</label>
+            <input type="number" id="caveActualHours" step="0.5" min="0" placeholder="direkt setzen oder über Hinzufügen sammeln" />
+
+            <div class="inline top-space">
+              <button id="caveRemoveActualToday">Heute entfernen</button>
+            </div>
+          </div>
+
+          <div class="card gaming-card">
+            <h2>Vergangene Medienwochen</h2>
+            <p class="hint">Wenn du eine neue Woche erzeugst, wird die vorherige Woche hier dokumentiert.</p>
+            <div id="caveHistoryList" class="log-list"></div>
+          </div>
+        </div>
+
+        <div id="caveBlockModal" class="cave-modal hidden" role="dialog" aria-modal="true" aria-labelledby="caveBlockModalTitle">
+          <div class="cave-modal-card gaming-card">
+            <div class="card-header">
+              <h2 id="caveBlockModalTitle">Block erstellen</h2>
+              <button id="caveCloseModal" class="small-btn">Schließen</button>
+            </div>
+
+            <p class="hint">
+              Ausgewählter Start: <strong id="caveSelectedSlot">keiner</strong>
+            </p>
+
+            <label>Titel</label>
+            <input type="text" id="caveBlockTitle" placeholder="z. B. Media Balance / digitale Medien" />
+
+            <label>Dauer in Stunden</label>
+            <input type="number" id="caveBlockDuration" step="0.5" min="0" value="0" />
+            <div class="duration-add-row" data-duration-target="caveBlockDuration">
+              <button type="button" data-duration-add="0.5">+0,5</button>
+              <button type="button" data-duration-add="1">+1,0</button>
+              <button type="button" data-duration-add="1.5">+1,5</button>
+              <button type="button" data-duration-add="2">+2,0</button>
+              <button type="button" data-duration-add="2.5">+2,5</button>
+              <button type="button" data-duration-add="3">+3,0</button>
+            </div>
+
+            <label>Typ</label>
+            <select id="caveBlockType" class="toolbar-select cave-select">
+              <option value="gaming">Gaming</option>
+              <option value="podcast">Podcast hören</option>
+              <option value="digital">Digitale Medien</option>
+              <option value="retreat">Rückzug</option>
+              <option value="regen">Regeneration</option>
+              <option value="risk">Achtung / Risiko</option>
+            </select>
+
+            <label>Notiz</label>
+            <textarea id="caveBlockNote" class="small-textarea" placeholder="z. B. Elden Ring, Tee, Ende 22:00, danach Licht aus"></textarea>
+
+            <div class="toolbar cave-formatbar">
+              <label class="checkbox-line"><input type="checkbox" id="caveBlockBold" /> fett</label>
+              <label class="checkbox-line"><input type="checkbox" id="caveBlockItalic" /> kursiv</label>
+              <label class="checkbox-line"><input type="checkbox" id="caveBlockUnderline" /> unterstrichen</label>
+              <input type="color" id="caveBlockTextColor" value="#ffffff" />
+            </div>
+
+            <div class="inline top-space">
+              <button id="caveCreateBlock">Block eintragen</button>
+              <button id="caveResetBlockForm" type="button">Formular leeren</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card gaming-card cave-calendar-card">
+          <h2>Wochenkalender</h2>
+          <p class="hint">
+            Acht Tagesspalten: Sonntag als Planungstag, danach Montag bis Sonntag der nächsten Woche.
+            Jeder Zeitslot entspricht 30 Minuten. 0–6 Uhr und 22:30–24 Uhr sind platzsparend einklappbar. Blöcke können jetzt über dasselbe Fenster erstellt und bearbeitet werden.
+          </p>
+
+          <div class="cave-scroll-shell">
+            <div class="calendar-scroll-top" data-scroll-sync="caveCalendarScroll"><div></div></div>
+            <div id="caveCalendarScroll" class="calendar-scroll-main">
+              <div id="caveCalendarGrid" class="cave-calendar-grid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+    </main>
+  </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
